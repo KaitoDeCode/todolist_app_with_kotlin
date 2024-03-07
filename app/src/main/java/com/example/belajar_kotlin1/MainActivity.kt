@@ -50,17 +50,13 @@ class MainActivity : AppCompatActivity() {
                         editor.putString("user", result)
                         editor.putInt("user_id", user.getInt("id"))
                         editor.apply()
-
                         setResult(RESULT_OK, Intent().apply{
                             putExtra("nama","Nama :" + binding.inptEmail.text.toString())
                             putExtra("pass", "Password : " + binding.inptEmail.text.toString())
                         })
-
                         Toast.makeText(this@MainActivity, "Selamat datang",Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this@MainActivity,Dashboard::class.java))
                     }
-
-
                 }else{
                     var result = conn.errorStream.bufferedReader().readText()
                     var error = JSONObject(result)
