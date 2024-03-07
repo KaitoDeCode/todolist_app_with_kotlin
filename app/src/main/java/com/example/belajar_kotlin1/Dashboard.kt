@@ -1,5 +1,6 @@
 package com.example.belajar_kotlin1
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,6 +23,19 @@ lateinit var binding: ActivityDashboardBinding
          binding = ActivityDashboardBinding.inflate(this.layoutInflater)
         setContentView(binding.root)
         getData("http://10.0.2.2:5036/api/Todo","GET")
+        navBtn()
+    }
+
+    fun navBtn(){
+        binding.navList.setOnClickListener {
+            startActivity(Intent(this@Dashboard,Dashboard::class.java))
+        }
+        binding.navTambah.setOnClickListener {
+            startActivity(Intent(this@Dashboard,Tambah::class.java))
+        }
+        binding.navProfile.setOnClickListener {
+            startActivity(Intent(this@Dashboard,Profile::class.java))
+        }
     }
 
     fun getData(url: String,method: String, ){
