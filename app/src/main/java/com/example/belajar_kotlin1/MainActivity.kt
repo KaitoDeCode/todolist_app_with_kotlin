@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnLogin.setOnClickListener{
             GlobalScope.launch(Dispatchers.IO){
-                var API_URL = URL("http://10.0.2.2:5000/sign-in")
+                var API_URL = URL("http://10.0.2.2:5036/api/Auth/login")
                 var conn = API_URL.openConnection() as HttpURLConnection
                 conn.requestMethod = "POST"
                 conn.setRequestProperty("Content-Type","application/json")
@@ -33,15 +33,14 @@ class MainActivity : AppCompatActivity() {
                     put("email", binding.inptEmail.text)
                     put("password", binding.inpPassword.text)
                 }
+                Log.d("data", "onCreate: ${data.toString()}")
 
                 conn.outputStream.write(data.toString().toByteArray())
 
                 var statusCode = conn.responseCode
-                var chechError = conn.errorStream.toString()
-                Log.d("Result", "onCreate: ${chechError}")
                 Log.d("Status-Code", "onCreate: ${statusCode}")
 
-                if(statusCode == 200){
+                if(statusCode == 200 || statusCode == 201){
                     var result = conn.inputStream.bufferedReader().readText()
                     var user = JSONObject(result)
 
@@ -49,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                     runOnUiThread{
                         var editor = getSharedPreferences("random", MODE_PRIVATE).edit()
                         editor.putString("user", result)
-                        editor.putInt("user_id", user.getInt("ID"))
+                        editor.putInt("user_id", user.getInt("id"))
                         editor.apply()
 
                         setResult(RESULT_OK, Intent().apply{
